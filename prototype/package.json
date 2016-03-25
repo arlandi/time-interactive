@@ -10,7 +10,12 @@
         "node-underscorify": "~0.0.12",
         "node-csvify": "~0.0.2"
     },
-    "scripts" : {},
+    "scripts" : {
+        "build": "browserify debug.js > script.js",
+        "deploy": "npm run build && npm run uglify && npm run upload",
+        "uglify": "uglifyjs script.js > script-min.js",
+        "upload": "aws s3 cp screenshot.png s3://time-static-shared/interactives/$npm_package_name/ && aws s3 cp script-min.js s3://time-static-shared/interactives/$npm_package_name/ && aws s3 cp index.html s3://time-static-shared/interactives/$npm_package_name/ && aws s3 cp script.js s3://time-static-shared/interactives/$npm_package_name/"
+    },
     "browserify": {
         "transform": ["node-lessify", "node-underscorify", "node-csvify"]
     }
